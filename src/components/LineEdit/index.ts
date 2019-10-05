@@ -1,63 +1,41 @@
-import { registerComponent } from "../config";
-import { QLineEdit } from "@nodegui/nodegui";
-import { ViewProps, setProps as setViewProps } from "../View";
-
-interface LineEditProps extends ViewProps {
-  children?: string;
-  text?: string;
-  placeholderText?: string;
-  readOnly?: boolean;
+import { Fiber } from "react-reconciler";
+import { registerComponent, ComponentConfig } from "../config";
+import { LineEditProps, RNLineEdit } from "./RNLineEdit";
+import { AppContainer } from "../../reconciler";
+class LineEditConfig extends ComponentConfig {
+  tagName = RNLineEdit.tagName;
+  shouldSetTextContent(nextProps: LineEditProps): boolean {
+    return true;
+  }
+  createInstance(
+    newProps: LineEditProps,
+    rootInstance: AppContainer,
+    context: any,
+    workInProgress: Fiber
+  ): RNLineEdit {
+    const widget = new RNLineEdit();
+    widget.setProps(newProps, {});
+    return widget;
+  }
+  commitMount(
+    instance: RNLineEdit,
+    newProps: LineEditProps,
+    internalInstanceHandle: any
+  ): void {
+    if (newProps.visible !== false) {
+      instance.show();
+    }
+    return;
+  }
+  commitUpdate(
+    instance: RNLineEdit,
+    updatePayload: any,
+    oldProps: LineEditProps,
+    newProps: LineEditProps,
+    finishedWork: Fiber
+  ): void {
+    instance.setProps(newProps, oldProps);
+  }
 }
 
-const setProps = (
-  widget: QLineEdit,
-  newProps: LineEditProps,
-  oldProps: LineEditProps
-) => {
-  const setter: LineEditProps = {
-    set text(text: string) {
-      widget.setText(text);
-    },
-    set placeholderText(text: string) {
-      widget.setPlaceholderText(text);
-    },
-    set readOnly(isReadOnly: boolean) {
-      widget.setReadOnly(isReadOnly);
-    }
-  };
-  Object.assign(setter, newProps);
-  setViewProps(widget, newProps, oldProps);
-};
-
-export const LineEdit = registerComponent<LineEditProps>({
-  id: "linedit",
-  getContext() {
-    return {};
-  },
-  shouldSetTextContent: () => {
-    return true;
-  },
-  createInstance: newProps => {
-    const widget = new QLineEdit();
-    setProps(widget, newProps, {});
-    return widget;
-  },
-  finalizeInitialChildren: () => {
-    return false;
-  },
-  commitMount: (instance, newProps, internalInstanceHandle) => {
-    return;
-  },
-  prepareUpdate: (
-    instance,
-    oldProps,
-    newProps,
-    rootContainerInstance,
-    hostContext
-  ) => {
-    return true;
-  },
-  commitUpdate: (instance, updatePayload, oldProps, newProps, finishedWork) => {
-    setProps(instance as QLineEdit, newProps, oldProps);
-  }
-});
+export const LineEdit = registerComponent<LineEditProps>(new LineEditConfig());

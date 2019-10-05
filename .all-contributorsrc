@@ -22,6 +22,42 @@
       "contributions": [
         "code"
       ]
+    },
+    {
+      "login": "Nicify",
+      "name": "Eva1ent",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/24217275?v=4",
+      "profile": "https://github.com/Nicify",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "slidinghotdog",
+      "name": "slidinghotdog",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/33790211?v=4",
+      "profile": "https://github.com/slidinghotdog",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "illBeRoy",
+      "name": "Roy Sommer",
+      "avatar_url": "https://avatars2.githubusercontent.com/u/6681893?v=4",
+      "profile": "https://www.linkedin.com/in/roysommer/",
+      "contributions": [
+        "code"
+      ]
+    },
+    {
+      "login": "nateshmbhat",
+      "name": "Natesh M Bhat",
+      "avatar_url": "https://avatars1.githubusercontent.com/u/23279926?v=4",
+      "profile": "https://github.com/nateshmbhat",
+      "contributions": [
+        "doc"
+      ]
     }
   ],
   "contributorsPerLine": 7,

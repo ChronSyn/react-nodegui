@@ -1,68 +1,46 @@
-import { registerComponent } from "../config";
-import { QPixmap, QLabelEvents, AspectRatioMode } from "@nodegui/nodegui";
-import { ViewProps, setProps as setViewProps } from "../View";
-import { ImageLabel } from "./ImageLabel";
-interface ImageProps extends ViewProps {
-  src?: string;
-  aspectRatioMode?: AspectRatioMode;
-}
-
-const setProps = (
-  widget: ImageLabel,
-  newProps: ImageProps,
-  oldProps: ImageProps
-) => {
-  const setter: ImageProps = {
-    set src(imageUrl: string) {
-      if (!imageUrl) {
-        return;
-      }
-      const pixMap = new QPixmap(imageUrl);
-      widget.setPixmap(pixMap);
-      const size = widget.size();
-      widget.scalePixmap(size.width, size.height);
-    },
-    set aspectRatioMode(mode: AspectRatioMode) {
-      widget.setAspectRatioMode(mode);
-    }
-  };
-  Object.assign(setter, newProps);
-  setViewProps(widget, newProps, oldProps);
-};
-
-export const Image = registerComponent<ImageProps>({
-  id: "image",
-  getContext() {
-    return {};
-  },
-  shouldSetTextContent: () => {
-    return false;
-  },
-  createInstance: newProps => {
-    const widget = new ImageLabel();
-    setProps(widget, newProps, {});
+import { QLabelEvents } from "@nodegui/nodegui";
+import { Fiber } from "react-reconciler";
+import { registerComponent, ComponentConfig } from "../config";
+import { RNImage, ImageProps } from "./RNImage";
+import { AppContainer } from "../../reconciler";
+class ImageConfig extends ComponentConfig {
+  tagName = RNImage.tagName;
+  shouldSetTextContent(nextProps: ImageProps): boolean {
+    return true;
+  }
+  createInstance(
+    newProps: ImageProps,
+    rootInstance: AppContainer,
+    context: any,
+    workInProgress: Fiber
+  ): RNImage {
+    const widget = new RNImage();
+    widget.setProps(newProps, {});
     widget.addEventListener(QLabelEvents.Resize, () => {
       const size = widget.size();
       widget.scalePixmap(size.width, size.height);
     });
     return widget;
-  },
-  finalizeInitialChildren: () => {
-    return false;
-  },
-  commitMount: (instance, newProps, internalInstanceHandle) => {
-    return;
-  },
-  prepareUpdate: (
-    instance,
-    oldProps,
-    newProps,
-    rootContainerInstance,
-    hostContext
-  ) => {
-    return true;
-  },
-  commitUpdate: (instance, updatePayload, oldProps, newProps, finishedWork) => {
-    setProps(instance as ImageLabel, newProps, oldProps);
   }
-});
+  commitMount(
+    instance: RNImage,
+    newProps: ImageProps,
+    internalInstanceHandle: any
+  ): void {
+    if (newProps.visible !== false) {
+      instance.show();
+    }
+    return;
+  }
+  commitUpdate(
+    instance: RNImage,
+    updatePayload: any,
+    oldProps: ImageProps,
+    newProps: ImageProps,
+    finishedWork: Fiber
+  ): void {
+    instance.setProps(newProps, oldProps);
+  }
+}
+
+export const Image = registerComponent<ImageProps>(new ImageConfig());

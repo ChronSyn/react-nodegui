@@ -1,63 +1,49 @@
-import { registerComponent } from "../config";
-import { QPushButton, QIcon } from "@nodegui/nodegui";
-import { ViewProps, setProps as setViewProps } from "../View";
-
-interface ButtonProps extends ViewProps {
-  text?: string;
-  isFlat?: boolean;
-  icon?: string;
+import { ComponentConfig, registerComponent } from "../config";
+import { Fiber } from "react-reconciler";
+import { RNButton, ButtonProps } from "./RNButton";
+import { AppContainer } from "../../reconciler";
+class ButtonConfig extends ComponentConfig {
+  tagName = RNButton.tagName;
+  shouldSetTextContent(nextProps: ButtonProps): boolean {
+    return true;
+  }
+  createInstance(
+    newProps: ButtonProps,
+    rootInstance: AppContainer,
+    context: any,
+    workInProgress: Fiber
+  ): RNButton {
+    const widget = new RNButton();
+    widget.setProps(newProps, {});
+    return widget;
+  }
+  commitMount(
+    instance: RNButton,
+    newProps: ButtonProps,
+    internalInstanceHandle: any
+  ): void {
+    if (newProps.visible !== false) {
+      instance.show();
+    }
+    return;
+  }
+  finalizeInitialChildren(
+    instance: RNButton,
+    newProps: ButtonProps,
+    rootContainerInstance: AppContainer,
+    context: any
+  ): boolean {
+    return true;
+  }
+  commitUpdate(
+    instance: RNButton,
+    updatePayload: any,
+    oldProps: ButtonProps,
+    newProps: ButtonProps,
+    finishedWork: Fiber
+  ): void {
+    instance.setProps(newProps, oldProps);
+  }
 }
 
-const setProps = (
-  widget: QPushButton,
-  newProps: ButtonProps,
-  oldProps: ButtonProps
-) => {
-  const setter: ButtonProps = {
-    set text(buttonText: string) {
-      widget.setText(buttonText);
-    },
-    set isFlat(isFlat: boolean) {
-      widget.setFlat(isFlat);
-    },
-    set icon(iconUrl: string) {
-      const icon = new QIcon(iconUrl);
-      widget.setIcon(icon);
-    }
-  };
-  Object.assign(setter, newProps);
-  setViewProps(widget, newProps, oldProps);
-};
-
-export const Button = registerComponent<ButtonProps>({
-  id: "button",
-  getContext() {
-    return {};
-  },
-  shouldSetTextContent: () => {
-    return false;
-  },
-  createInstance: newProps => {
-    const widget = new QPushButton();
-    setProps(widget, newProps, {});
-    return widget;
-  },
-  finalizeInitialChildren: () => {
-    return false;
-  },
-  commitMount: (instance, newProps, internalInstanceHandle) => {
-    return;
-  },
-  prepareUpdate: (
-    instance,
-    oldProps,
-    newProps,
-    rootContainerInstance,
-    hostContext
-  ) => {
-    return true;
-  },
-  commitUpdate: (instance, updatePayload, oldProps, newProps, finishedWork) => {
-    setProps(instance as QPushButton, newProps, oldProps);
-  }
-});
+export const Button = registerComponent<ButtonProps>(new ButtonConfig());

@@ -1,52 +1,43 @@
-import { registerComponent } from "../config";
-import { QProgressBar } from "@nodegui/nodegui";
-import { ViewProps, setProps as setViewProps } from "../View";
-
-interface ProgressBarProps extends ViewProps {}
-
-const setProps = (
-  widget: QProgressBar,
-  newProps: ProgressBarProps,
-  oldProps: ProgressBarProps
-) => {
-  const setter: ProgressBarProps = {
-    // set text(checkboxText: string) {
-    //   widget.setText(checkboxText);
-    // }
-  };
-  Object.assign(setter, newProps);
-  setViewProps(widget, newProps, oldProps);
-};
-
-export const ProgressBar = registerComponent<ProgressBarProps>({
-  id: "progressbar",
-  getContext() {
-    return {};
-  },
-  shouldSetTextContent: () => {
+import { Fiber } from "react-reconciler";
+import { registerComponent, ComponentConfig } from "../config";
+import { RNProgressBar, ProgressBarProps } from "./RNProgressBar";
+import { AppContainer } from "../../reconciler";
+class ProgressBarConfig extends ComponentConfig {
+  tagName = RNProgressBar.tagName;
+  shouldSetTextContent(nextProps: ProgressBarProps): boolean {
     return false;
-  },
-  createInstance: newProps => {
-    const widget = new QProgressBar();
-    setProps(widget, newProps, {});
-    return widget;
-  },
-  finalizeInitialChildren: () => {
-    return false;
-  },
-  commitMount: (instance, newProps, internalInstanceHandle) => {
-    return;
-  },
-  prepareUpdate: (
-    instance,
-    oldProps,
-    newProps,
-    rootContainerInstance,
-    hostContext
-  ) => {
-    return true;
-  },
-  commitUpdate: (instance, updatePayload, oldProps, newProps, finishedWork) => {
-    setProps(instance as QProgressBar, newProps, oldProps);
   }
-});
+  createInstance(
+    newProps: ProgressBarProps,
+    rootInstance: AppContainer,
+    context: any,
+    workInProgress: Fiber
+  ): RNProgressBar {
+    const widget = new RNProgressBar();
+    widget.setProps(newProps, {});
+    return widget;
+  }
+  commitMount(
+    instance: RNProgressBar,
+    newProps: ProgressBarProps,
+    internalInstanceHandle: any
+  ): void {
+    if (newProps.visible !== false) {
+      instance.show();
+    }
+    return;
+  }
+  commitUpdate(
+    instance: RNProgressBar,
+    updatePayload: any,
+    oldProps: ProgressBarProps,
+    newProps: ProgressBarProps,
+    finishedWork: Fiber
+  ): void {
+    instance.setProps(newProps, oldProps);
+  }
+}
+
+export const ProgressBar = registerComponent<ProgressBarProps>(
+  new ProgressBarConfig()
+);

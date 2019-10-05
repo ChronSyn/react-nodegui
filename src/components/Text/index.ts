@@ -1,54 +1,49 @@
-import { registerComponent } from "../config";
-import { QLabel } from "@nodegui/nodegui";
-import { ViewProps, setProps as setViewProps } from "../View";
-
-interface TextProps extends ViewProps {
-  children?: string | number;
-  wordWrap?: boolean;
+import { Fiber } from "react-reconciler";
+import { registerComponent, ComponentConfig } from "../config";
+import { RNText, TextProps } from "./RNText";
+import { AppContainer } from "../../reconciler";
+class TextConfig extends ComponentConfig {
+  tagName = RNText.tagName;
+  shouldSetTextContent(nextProps: TextProps): boolean {
+    return true;
+  }
+  createInstance(
+    newProps: TextProps,
+    rootInstance: AppContainer,
+    context: any,
+    workInProgress: Fiber
+  ): RNText {
+    const widget = new RNText();
+    widget.setProps(newProps, {});
+    return widget;
+  }
+  commitMount(
+    instance: RNText,
+    newProps: TextProps,
+    internalInstanceHandle: any
+  ): void {
+    if (newProps.visible !== false) {
+      instance.show();
+    }
+    return;
+  }
+  finalizeInitialChildren(
+    instance: RNText,
+    newProps: TextProps,
+    rootContainerInstance: AppContainer,
+    context: any
+  ): boolean {
+    return true;
+  }
+  commitUpdate(
+    instance: RNText,
+    updatePayload: any,
+    oldProps: TextProps,
+    newProps: TextProps,
+    finishedWork: Fiber
+  ): void {
+    instance.setProps(newProps, oldProps);
+  }
 }
 
-const setProps = (widget: QLabel, newProps: TextProps, oldProps: TextProps) => {
-  const setter: TextProps = {
-    set children(text: string | number) {
-      widget.setText(text);
-    },
-    set wordWrap(shouldWrap: boolean) {
-      widget.setWordWrap(shouldWrap);
-    }
-  };
-  Object.assign(setter, newProps);
-  setViewProps(widget, newProps, oldProps);
-};
-
-export const Text = registerComponent<TextProps>({
-  id: "text",
-  getContext() {
-    return {};
-  },
-  shouldSetTextContent: () => {
-    return true;
-  },
-  createInstance: newProps => {
-    const widget = new QLabel();
-    setProps(widget, newProps, {});
-    return widget;
-  },
-  finalizeInitialChildren: () => {
-    return false;
-  },
-  commitMount: (instance, newProps, internalInstanceHandle) => {
-    return;
-  },
-  prepareUpdate: (
-    instance,
-    oldProps,
-    newProps,
-    rootContainerInstance,
-    hostContext
-  ) => {
-    return true;
-  },
-  commitUpdate: (instance, updatePayload, oldProps, newProps, finishedWork) => {
-    setProps(instance as QLabel, newProps, oldProps);
-  }
-});
+export const Text = registerComponent<TextProps>(new TextConfig());
