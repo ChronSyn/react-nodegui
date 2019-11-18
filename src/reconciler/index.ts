@@ -1,6 +1,11 @@
 import Reconciler from "react-reconciler";
 import { NodeWidget } from "@nodegui/nodegui";
-import { getComponentByTagName, RNWidget, RNProps } from "../components/config";
+import {
+  getComponentByTagName,
+  RNWidget,
+  RNProps,
+  RNComponent
+} from "../components/config";
 
 export type AppContainer = Set<NodeWidget>;
 export const appContainer: AppContainer = new Set<NodeWidget>();
@@ -9,7 +14,7 @@ const HostConfig: Reconciler.HostConfig<
   string,
   RNProps,
   AppContainer,
-  NodeWidget,
+  RNComponent,
   any,
   any,
   any,
@@ -97,6 +102,9 @@ const HostConfig: Reconciler.HostConfig<
   },
   removeChildFromContainer: (container, child) => {
     container.delete(child);
+    if (child.close) {
+      child.close();
+    }
   },
   prepareUpdate: function(
     instance,
@@ -144,6 +152,9 @@ const HostConfig: Reconciler.HostConfig<
   },
   removeChild: (parent: RNWidget, child: NodeWidget) => {
     parent.removeChild(child);
+    if (child.close) {
+      child.close();
+    }
   },
   commitTextUpdate: (textInstance, oldText, newText) => {
     //noop since we manage all text using Text component

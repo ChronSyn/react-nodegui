@@ -47,9 +47,15 @@ Visit: https://react.nodegui.org for docs.
 - Check out [react-nodegui-starter](https://github.com/nodegui/react-nodegui-starter) to get up and running with your own React NodeGUI app!
 - Read through the [docs](https://react.nodegui.org)
 
+**Community Guides**
+
+- https://blog.logrocket.com/electron-alternatives-exploring-nodegui-and-react-nodegui/ - Electron alternatives: Exploring NodeGUI and React NodeGUI by [Siegfried Grimbeek](https://blog.logrocket.com/author/siegfriedgrimbeek/).
+
 **Talks/Podcasts**
 
-<audio data-theme="night" data-src="https://changelog.com/jsparty/96/embed" src="https://cdn.changelog.com/uploads/jsparty/96/js-party-96.mp3" preload="none" class="changelog-episode" controls></audio><p><a href="https://changelog.com/jsparty/96">JS Party 96: Performant Node desktop apps with NodeGUI</a> – Listen on <a href="https://changelog.com/">Changelog.com</a></p>
+- [NodeGui and React NodeGui at KarmaJS Nov 2019 meetup: https://www.youtube.com/watch?v=8jH5gaEEDv4](https://www.youtube.com/watch?v=8jH5gaEEDv4)
+
+- <audio data-theme="night" data-src="https://changelog.com/jsparty/96/embed" src="https://cdn.changelog.com/uploads/jsparty/96/js-party-96.mp3" preload="none" class="changelog-episode" controls></audio><p><a href="https://changelog.com/jsparty/96">JS Party 96: Performant Node desktop apps with NodeGUI</a> – Listen on <a href="https://changelog.com/">Changelog.com</a></p>
 
 
 ## Docs for contributing
@@ -68,7 +74,7 @@ Please read: https://github.com/nodegui/.github/blob/master/CONTRIBUTING.md
 
 ## Funding
 
-React NodeGUI is an open source project and requires your support. If you like this project, please consider supporting my work with Ko-fi. Alternatively, Issues on React NodeGui can be funded by anyone via Issuehunt and the amount will be distributed to respective contributors.
+React NodeGUI is an open source project and requires your support. If you like this project, please consider supporting my work by clicking on the sponsor button on this Github repo or via Ko-Fi. Alternatively, Issues on React NodeGui can be funded by anyone via Issuehunt and the amount will be distributed to respective contributors.
 
 <p>
  <a href='https://ko-fi.com/E1E510AV9' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi4.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a> &nbsp; &nbsp; 
